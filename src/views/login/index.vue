@@ -61,9 +61,11 @@ export default {
           this.$http.post('http://ttapi.research.itcast.cn/mp/v1_0/authorizations', this.loginForm)
             .then(res => {
               console.log(res.data)
+              // 验证成功后跳转首页
+              this.$router.puhs('/')
             })
             .catch(() => {
-
+              this.$message.error('手机号码或验证码不正确')
             })
         } else {
           console.log('提交失败')
