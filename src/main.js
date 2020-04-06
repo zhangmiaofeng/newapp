@@ -8,6 +8,10 @@ import 'element-ui/lib/theme-chalk/index.css'
 // 引入路由
 import router from '@/router'
 
+// 引入axios
+import axios from 'axios'
+Vue.prototype.$http = axios
+
 // 挂载
 Vue.use(ElementUI)
 // I在控制台提示信息
