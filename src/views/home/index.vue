@@ -57,8 +57,8 @@
               <i class="el-icon-arrow-down el-icon--right"></i>
             </span>
             <el-dropdown-menu slot="dropdown">
-              <el-dropdown-item>个人设置</el-dropdown-item>
-              <el-dropdown-item>退出登录</el-dropdown-item>
+              <el-dropdown-item icon="el-icon-setting" @click.native="setting()">个人设置</el-dropdown-item>
+              <el-dropdown-item icon="el-icon-unlock" @click.native="loadout()">退出登录</el-dropdown-item>
             </el-dropdown-menu>
           </el-dropdown>
         </el-header>
@@ -92,6 +92,18 @@ export default {
     // 切换侧边栏导航展开还是收起
     toggleMenu () {
       this.isCollapse = !this.isCollapse
+    },
+    // 个人设置
+    setting () {
+      // click 事件是原生事件 要绑定在原生dom上
+      // 事件修饰符native 就是原生
+      this.$router.push({ name: '/setting' })
+    },
+    // 退出登录
+    loadout () {
+      // 清除用户信息
+      store.clearUser()
+      this.$router.push({ name: '/login' })
     }
   }
 

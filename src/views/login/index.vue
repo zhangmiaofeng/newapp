@@ -77,6 +77,7 @@ export default {
           try {
             const { data: { data } } = await this.$http.post('authorizations', this.loginForm)
             store.setUser(data)
+            this.$router.push('/')
           } catch (e) {
             this.$message.error('手机号码或者验证码不正确')
           }
