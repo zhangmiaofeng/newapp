@@ -36,11 +36,13 @@
             type="daterange"
             range-separator="至"
             start-placeholder="开始日期"
-            end-placeholder="结束日期">
+            end-placeholder="结束日期"
+            @change="changDate"
+            value-format="yyyy-MM-dd">
           </el-date-picker>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary">筛选</el-button>
+          <el-button type="primary" @click="search()">筛选</el-button>
         </el-form-item>
       </el-form>
     </el-card>
@@ -161,6 +163,33 @@ export default {
     changePager (newPage) {
       this.reqParamse.page = newPage
       this.getArticles()
+    },
+    // 筛选功能
+    search () {
+      // 从第一页开始
+      this.reqParamse.page = 1
+      this.getArticles()
+    },
+    // 点击日期事件 传参日期数组
+    changDate (dateArr) {
+      if (dateArr) {
+        console.log(dateArr)
+        this.reqParamse.begin_pubdate = dateArr[0]
+        this.reqParamse.end_pubdate = dateArr[1]
+      } else {
+        this.reqParamse.begin_pubdate = null
+        this.reqParamse.end_pubdate = null
+      }
+    }
+  },
+  // 计算属性: 新数据依赖data里面的数据
+  // 监听：监听某一个属性的变化，做一些异步操作开销较大的操作
+  watch: {
+    // 清空频道
+    'reqParamse.channel_id': function (newValue, oldValue) {
+      if (newValue) {
+        this.reqParamse.channel_id = null
+      }
     }
   }
 }
