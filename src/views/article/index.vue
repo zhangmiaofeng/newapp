@@ -21,14 +21,8 @@
           </el-radio-group>
         </el-form-item>
         <el-form-item label="频道:">
-          <el-select v-model="reqParamse.channel_id" multiple placeholder="请选择">
-            <el-option
-              v-for="item in channelOptions"
-              :key="item.id"
-              :label="item.name"
-              :value="item.id"
-            ></el-option>
-          </el-select>
+          <!-- 使用自己的组件 -->
+          <my-channel v-model="reqParamse.channel_id"></my-channel>
         </el-form-item>
         <el-form-item label="日期:">
           <el-date-picker
@@ -98,8 +92,9 @@
 
 <script>
 import MyBread from '@/components/my-bread'
+import MyChannel from '@/components/my-channel'
 export default {
-  components: { MyBread },
+  components: { MyBread, MyChannel },
   data () {
     return {
       // 筛选项表单数据,提交给后台参数
@@ -122,17 +117,9 @@ export default {
   },
   // 在创建实例之后发请求 获取数据
   created () {
-    // 获取频道下拉选项数据
-    this.getChannelOptions()
     this.getArticles()
   },
   methods: {
-    // 获取频道下拉列表数据
-    async getChannelOptions () {
-      const { data: { data } } = await this.$http.get('channels')
-      // console.log(data)
-      this.channelOptions = data.channels
-    },
     // 获取筛选结果数据 携带参数
     async getArticles () {
       const { data: { data } } = await this.$http.get('articles', { paramse: this.reqParamse })
@@ -179,18 +166,8 @@ export default {
         this.getArticles()
       }).catch(() => {})
     }
-  },
-  // 计算属性: 新数据依赖data里面的数据
-  // 监听：监听某一个属性的变化，做一些异步操作开销较大的操作
-  watch: {
-    // 清空频道
-    'reqParamse.channel_id': function (newValue, oldValue) {
-      if (newValue) {
-        this.reqParamse.channel_id = null
-      }
-    }
   }
 }
 </script>
 
-<style lang='stylus' scoped></style>
+<style lang='less' scoped></style>
