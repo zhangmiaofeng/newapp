@@ -10,6 +10,9 @@ import router from '@/router'
 
 // 引入axios
 import axios from '@/api'
+// 自己的插件使用
+import myCom from '@/components'
+Vue.use(myCom)
 Vue.prototype.$http = axios
 
 // 挂载
