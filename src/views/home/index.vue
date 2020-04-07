@@ -50,15 +50,17 @@
           <span class="el-icon-s-fold" @click="toggleMenu()"></span>
           <span class="text">北京云定科技有限公司</span>
           <!-- 右边下拉菜单 -->
-          <el-dropdown class="my-dropdown">
+          <el-dropdown class="my-dropdown" @command="changMenu">
             <span class="el-dropdown-link">
               <img :src="photo" alt />
               {{name}}
               <i class="el-icon-arrow-down el-icon--right"></i>
             </span>
             <el-dropdown-menu slot="dropdown">
-              <el-dropdown-item icon="el-icon-setting" @click.native="setting()">个人设置</el-dropdown-item>
-              <el-dropdown-item icon="el-icon-unlock" @click.native="loadout()">退出登录</el-dropdown-item>
+              <!-- <el-dropdown-item icon="el-icon-setting" @click.native="setting()">个人设置</el-dropdown-item>
+              <el-dropdown-item icon="el-icon-setting" @click.native="loadout()">个人设置</el-dropdown-item> -->
+              <el-dropdown-item icon="el-icon-unlock" command="setting">退出登录</el-dropdown-item>
+              <el-dropdown-item icon="el-icon-unlock" command="loadout">退出登录</el-dropdown-item>
             </el-dropdown-menu>
           </el-dropdown>
         </el-header>
@@ -84,7 +86,7 @@ export default {
   },
   created () {
     // 从本地存储中取用户信息
-    const user = store.getUser
+    const user = store.getUser()
     this.name = user.name
     this.photo = user.photo
   },
@@ -104,6 +106,10 @@ export default {
       // 清除用户信息
       store.clearUser()
       this.$router.push({ name: '/login' })
+    },
+    // 当触发command的时候会自动传递触发的事件类型
+    changMenu (menuType) {
+      this[menuType]()
     }
   }
 
