@@ -23,6 +23,7 @@
 </template>
 
 <script>
+import store from '@/store'
 export default {
   data () {
     // 声明自定义的函数
@@ -61,8 +62,10 @@ export default {
           this.$http.post('http://ttapi.research.itcast.cn/mp/v1_0/authorizations', this.loginForm)
             .then(res => {
               console.log(res.data)
+              // 存储用户信息
+              store.setUser(res.data.data)
               // 验证成功后跳转首页
-              this.$router.puhs('/')
+              this.$router.push('/')
             })
             .catch(() => {
               this.$message.error('手机号码或验证码不正确')

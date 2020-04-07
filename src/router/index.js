@@ -47,4 +47,8 @@ const router = new VueRouter({
   ]
 })
 
+// 设置前置路由导航守卫
+router.beforeEach((to, from, next) => {
+
+})
 export default router
