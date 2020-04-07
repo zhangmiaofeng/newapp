@@ -52,8 +52,8 @@
           <!-- 右边下拉菜单 -->
           <el-dropdown class="my-dropdown">
             <span class="el-dropdown-link">
-              <img src="../../assets/images/avatar.jpg" alt />
-              用户名称
+              <img :src="photo" alt />
+              {{name}}
               <i class="el-icon-arrow-down el-icon--right"></i>
             </span>
             <el-dropdown-menu slot="dropdown">
@@ -72,12 +72,21 @@
 </template>
 
 <script>
+import store from '@/store'
 export default {
   data () {
     return {
       // 控制展开收起
-      isCollapse: false
+      isCollapse: false,
+      name: '',
+      photo: ''
     }
+  },
+  created () {
+    // 从本地存储中取用户信息
+    const user = store.getUser
+    this.name = user.name
+    this.photo = user.photo
   },
   methods: {
     // 切换侧边栏导航展开还是收起

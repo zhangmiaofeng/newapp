@@ -55,24 +55,31 @@ export default {
   methods: {
     // 整体校验规则
     login () {
-      this.$refs.loginForm.validate((valid) => {
+      this.$refs.loginForm.validate(async (valid) => {
         if (valid) {
-          console.log('成功提交')
-          // 请求后台数据 传递参数
-          this.$http.post('http://ttapi.research.itcast.cn/mp/v1_0/authorizations', this.loginForm)
-            .then(res => {
-              console.log(res.data)
-              // 存储用户信息
-              store.setUser(res.data.data)
-              // 验证成功后跳转首页
-              this.$router.push('/')
-            })
-            .catch(() => {
-              this.$message.error('手机号码或验证码不正确')
-            })
-        } else {
-          console.log('提交失败')
-          return false
+        //   console.log('成功提交')
+        //   // 请求后台数据 传递参数
+        //   this.$http.post('http://ttapi.research.itcast.cn/mp/v1_0/authorizations', this.loginForm)
+        //     .then(res => {
+        //       console.log(res.data)
+        //       // 存储用户信息
+        //       store.setUser(res.data.data)
+        //       // 验证成功后跳转首页
+        //       this.$router.push('/')
+        //     })
+        //     .catch(() => {
+        //       this.$message.error('手机号码或验证码不正确')
+        //     })
+        // } else {
+        //   console.log('提交失败')
+        //   return false
+
+          try {
+            const { data: { data } } = await this.$http.post('authorizations', this.loginForm)
+            store.setUser(data)
+          } catch (e) {
+            this.$message.error('手机号码或者验证码不正确')
+          }
         }
       })
     }
