@@ -6,7 +6,15 @@ import router from '../router'
 
 // 进行基准地址和请求头的配置
 axios.defaults.baseURL = 'http://ttapi.research.itcast.cn/mp/v1_0'
-
+axios.defaults.transformResponse = [
+  (data) => {
+    try {
+      return JSON.parse(data)
+    } catch (e) {
+      return data
+    }
+  }
+]
 // axios.defaults.headers = {
 //   // 头部加token
 //   Authorization: `Bearer ${store.getUser().token}`

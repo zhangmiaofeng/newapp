@@ -6,7 +6,7 @@
         <!-- <el-breadcrumb separator-class="el-icon-arrow-right">
           <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
           <el-breadcrumb-item>内容管理</el-breadcrumb-item>
-        </el-breadcrumb> -->
+        </el-breadcrumb>-->
         <my-bread>内容管理</my-bread>
       </div>
       <!-- 表单 -->
@@ -26,8 +26,8 @@
               v-for="item in channelOptions"
               :key="item.id"
               :label="item.name"
-              :value="item.id">
-            </el-option>
+              :value="item.id"
+            ></el-option>
           </el-select>
         </el-form-item>
         <el-form-item label="日期:">
@@ -38,8 +38,8 @@
             start-placeholder="开始日期"
             end-placeholder="结束日期"
             @change="changDate"
-            value-format="yyyy-MM-dd">
-          </el-date-picker>
+            value-format="yyyy-MM-dd"
+          ></el-date-picker>
         </el-form-item>
         <el-form-item>
           <el-button type="primary" @click="search()">筛选</el-button>
@@ -49,35 +49,22 @@
     <!-- 筛选结果 -->
     <el-card>
       <!-- 具名插槽 -->
-      <div slot="header">
-        根据筛选条件查询到 {{total}}条 结果
-      </div>
+      <div slot="header">根据筛选条件查询到 {{total}}条 结果</div>
       <!-- 表格组件 -->
-      <el-table
-        :data="articles"
-        style="width: 100%">
-        <el-table-column
-          prop="images"
-          label="封面"
-          width="180">
+      <el-table :data="articles" style="width: 100%">
+        <el-table-column prop="images" label="封面" width="180">
           <!-- 使用作用域插槽 -->
           <template slot-scope="scope">
             <!-- {{scope.row}} -->
             <el-image :src="scope.row.cover.images[0]" fit="cover" style="width:120px;height:80px">
               <div slot="error" class="image-slot">
-                <img class="el-icon-picture-outline" style="width:120px;height:80px">
+                <img class="el-icon-picture-outline" style="width:120px;height:80px" />
               </div>
             </el-image>
           </template>
         </el-table-column>
-        <el-table-column
-          prop="title"
-          label="标题"
-          width="180">
-        </el-table-column>
-        <el-table-column
-          prop="status"
-          label="状态">
+        <el-table-column prop="title" label="标题" width="180"></el-table-column>
+        <el-table-column prop="status" label="状态">
           <template slot-scope="scope">
             <el-tag v-if="scope.row.status === 0" type="info">草稿</el-tag>
             <el-tag v-if="scope.row.status === 1">待审核</el-tag>
@@ -86,19 +73,13 @@
             <el-tag v-if="scope.row.status === 4" type="danger">删除</el-tag>
           </template>
         </el-table-column>
-        <el-table-column
-          prop="pubdate"
-          label="操作"
-          width="120">
-          <template>
+        <el-table-column prop="pubdate" label="操作" width="120">
+          <template slot-scope="scope">
             <el-button plain type="primary" icon="el-icon-edit" circle></el-button>
             <el-button plain type="danger" @click="del(scope.row.id)" icon="el-icon-delete" circle></el-button>
           </template>
         </el-table-column>
-        <el-table-column
-          prop="pubdate"
-          label="发布日期">
-        </el-table-column>
+        <el-table-column prop="pubdate" label="发布日期"></el-table-column>
       </el-table>
       <!-- 分页组件 -->
       <div style="text-align:center;margin-top:20px">
@@ -108,8 +89,8 @@
           :total="total"
           :page-size="reqParamse.per_page"
           :current-page="reqParamse.page"
-          @current-change="changePager">
-        </el-pagination>
+          @current-change="changePager"
+        ></el-pagination>
       </div>
     </el-card>
   </div>
@@ -180,6 +161,18 @@ export default {
         this.reqParamse.begin_pubdate = null
         this.reqParamse.end_pubdate = null
       }
+    },
+    // 删除
+    del (id) {
+      this.$confirm('此操作将永久删除该文章, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(async () => {
+        await this.$http.delete(`articles/${id}`)
+        this.$message.error('删除文章成功')
+        this.getArticles()
+      }).catch(() => {})
     }
   },
   // 计算属性: 新数据依赖data里面的数据
