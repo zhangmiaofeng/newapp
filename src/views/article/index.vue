@@ -73,10 +73,10 @@
             <el-tag v-if="scope.row.status === 4" type="danger">删除</el-tag>
           </template>
         </el-table-column>
-        <el-table-column prop="pubdate" label="操作" width="120">
+        <el-table-column prop="pubdate" label="操作" width="180">
           <template slot-scope="scope">
-            <el-button plain type="primary" icon="el-icon-edit" circle></el-button>
-            <el-button plain type="danger" @click="del(scope.row.id)" icon="el-icon-delete" circle></el-button>
+            <el-button plain type="primary" icon="el-icon-edit" @click="edit(scope.row.id)" circle>编辑</el-button>
+            <el-button plain type="danger" @click="del(scope.row.id)" icon="el-icon-delete" circle>删除</el-button>
           </template>
         </el-table-column>
         <el-table-column prop="pubdate" label="发布日期"></el-table-column>
@@ -161,6 +161,11 @@ export default {
         this.reqParamse.begin_pubdate = null
         this.reqParamse.end_pubdate = null
       }
+    },
+    // 编辑
+    edit (id) {
+      // 跳转到编辑页面
+      this.$router.push('/publish?id=' + id)
     },
     // 删除
     del (id) {
