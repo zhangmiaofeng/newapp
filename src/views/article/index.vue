@@ -46,6 +46,41 @@
     </el-card>
     <!-- 筛选结果 -->
     <el-card>
+      <!-- 具名插槽 -->
+      <div slot="header">
+        根据筛选条件查询到 0条 结果
+      </div>
+      <!-- 表格组件 -->
+      <el-table
+        :data="articles"
+        style="width: 100%">
+        <el-table-column
+          prop="img"
+          label="封面"
+          width="180">
+        </el-table-column>
+        <el-table-column
+          prop="title"
+          label="标题"
+          width="180">
+        </el-table-column>
+        <el-table-column
+          prop="status"
+          label="状态">
+        </el-table-column>
+        <el-table-column
+          prop="pubdate"
+          label="发布日期">
+        </el-table-column>
+      </el-table>
+      <!-- 分页组件 -->
+      <div style="text-align:center;margin-top:20px">
+        <el-pagination
+          background
+          layout="prev, pager, next"
+          :total="1000">
+        </el-pagination>
+      </div>
     </el-card>
   </div>
 </template>
@@ -66,7 +101,11 @@ export default {
         { value: 1, label: '绩效考核' }
       ],
       // 时间日期
-      dateArr: []
+      dateArr: [],
+      // 表格数据
+      articles: [
+        { img: '1', title: '', status: '', pubdate: '' }
+      ]
     }
   },
   // 在创建实例之后发请求 获取数据
