@@ -7,6 +7,7 @@ import Home from '@/views/home'
 import Welcome from '@/views/welcome'
 import Article from '@/views/article'
 import NotFound from '@/views/404'
+import Img from '@/views/img'
 
 import store from '@/store'
 
@@ -37,6 +38,11 @@ const router = new VueRouter({
           path: '/article',
           name: 'article',
           component: Article
+        },
+        {
+          path: '/image',
+          name: 'img',
+          component: Img
         }
       ]
     },
