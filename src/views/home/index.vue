@@ -3,7 +3,7 @@
     <el-container>
       <el-aside :width="isCollapse?'64px':'200px'">
         <!-- 公司logo -->
-        <div class="logo" :class="{miniLogo:isCollapse}">云定科技后台管理系统</div>
+        <div class="logo" :class="{miniLogo:isCollapse}">后台管理系统</div>
         <!-- 导航菜单 -->
         <el-menu
           :default-active="$route.path"
@@ -48,7 +48,7 @@
         <el-header>
           <!-- 图标 文字 -->
           <span class="el-icon-s-fold" @click="toggleMenu()"></span>
-          <span class="text">北京云定科技有限公司</span>
+          <span class="text">某科技有限公司</span>
           <!-- 右边下拉菜单 -->
           <el-dropdown class="my-dropdown" @command="changMenu">
             <span class="el-dropdown-link">
