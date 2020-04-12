@@ -2,7 +2,7 @@
 <div class='container'>
     <el-card>
         <div slot="header">
-            <my-bread>发布文章</my-bread>
+            <my-bread>{{articleId ? '修改文章' : '发布文章'}}</my-bread>
         </div>
         <!-- 表单 -->
         <el-form label-width="100px">
@@ -34,9 +34,13 @@
             <el-form-item label="频道:">
               <my-channel v-model="articleForm.channel_id"></my-channel>
             </el-form-item>
-            <el-form-item>
-                <el-button type="success" size="small" @click="submit(false)">发表</el-button>
-                <el-button type="info" size="small" @click="submit(true)">存入草稿</el-button>
+            <el-form-item v-if="!articleId">
+                <el-button type="primary" size="small" @click="submit(false)">发表</el-button>
+                <el-button size="small" @click="submit(true)">存入草稿</el-button>
+            </el-form-item>
+            <el-form-item v-else>
+                <el-button type="success" size="small" @click="update(false)">修改</el-button>
+                <el-button size="small" @click="update(true)">存入草稿</el-button>
             </el-form-item>
         </el-form>
     </el-card>
@@ -78,10 +82,43 @@ export default {
             ['image']
           ]
         }
+      },
+      // 文章id
+      articleId: null
+    }
+  },
+  // 监听事件
+  watch: {
+    $route () {
+      // 如果没有文章id  恢复默认数据
+      if (!this.$route.query.id) {
+        this.articleId = null
+        this.articleForm = {
+          title: null,
+          content: null,
+          cover: {
+            type: 1,
+            imgages: []
+          },
+          channel_id: null
+        }
       }
     }
   },
+  created () {
+    // 获取地址栏传参
+    this.articleId = this.$route.query.id
+    // 判断
+    if (this.articleId) {
+      this.getArticle()
+    }
+  },
   methods: {
+    // 获取文章数据
+    async getArticle () {
+      const { data: { data } } = await this.$http.get('articles/' + this.articleId)
+      this.articleForm = data
+    },
     changeType () {
       // 重置图片数据
       this.articleForm.cover.images = []
@@ -90,6 +127,13 @@ export default {
     async submit (draft) {
       await this.$http.post(`articles?draft=${draft}`, this.articleForm)
       this.$message.success(draft ? '文章存入草稿成功' : '文章发表成功')
+      // 路由跳转到内容管理
+      this.$router.push('/article')
+    },
+    // 修改文章
+    async update (draft) {
+      await this.$http.put(`articles/${this.articleId}?draft=${draft}`, this.articleForm)
+      this.$message.success(draft ? '修改存入草稿成功' : '文章修改成功')
       // 路由跳转到内容管理
       this.$router.push('/article')
     }
