@@ -20,10 +20,8 @@
                     <el-radio :label="0">无图</el-radio>
                     <el-radio :label="-1">自动</el-radio>
                 </el-radio-group>
-                <div class="imgBtn">
-                    <img src="../../assets/images/default.png" alt="">
-                    <!-- 上传组件 -->
-                </div>
+                <!-- 素材上传组件 -->
+                <my-image></my-image>
             </el-form-item>
             <el-form-item label="频道:">
               <my-channel v-model="articleForm.channel_id"></my-channel>
@@ -38,15 +36,16 @@
 </template>
 
 <script>
-import MyBread from '@/components/my-bread'
-import MyChannel from '@/components/my-channel'
+// import MyBread from '@/components/my-bread'
+// import MyChannel from '@/components/my-channel'
+// import MyImage from '@/components/my-image'
 import 'quill/dist/quill.core.css'
 import 'quill/dist/quill.snow.css'
 import 'quill/dist/quill.bubble.css'
-
 import { quillEditor } from 'vue-quill-editor'
 export default {
-  components: { MyBread, MyChannel, quillEditor },
+  // components: { MyBread, MyChannel, quillEditor, MyImage },
+  components: { quillEditor },
   data () {
     return {
       articleForm: {
@@ -78,15 +77,4 @@ export default {
 }
 </script>
 
-<style lang='less' scoped>
-.imgBtn {
-    width: 160px;
-    height: 160px;
-    border: 1px solid #dddd;
-    img {
-        display: block;
-        width: 100%;
-        height: 100%;
-    }
-}
-</style>
+<style lang='less' scoped></style>
