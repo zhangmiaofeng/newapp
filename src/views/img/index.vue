@@ -5,7 +5,7 @@
         <my-bread>素材管理</my-bread>
       </div>
       <div class="btn_box">
-        <el-radio-group v-model="reqParamse.collect" @change="changeCollect">
+        <el-radio-group v-model="reqParams.collect" @change="changeCollect">
           <el-radio-button :label="true" size="small">全部</el-radio-button>
           <el-radio-button :label="false" size="small">收藏</el-radio-button>
         </el-radio-group>
@@ -15,7 +15,7 @@
       <div class="img_list">
         <div class="img_item" v-for="item in images" :key="item.id">
           <img :src="item.url" alt />
-          <div class="foot" v-show="!reqParamse.collect">
+          <div class="foot" v-show="!reqParams.collect">
             <span class="el-icon-star-off" @click="toggleCollect(item)" :class="{selected:item.is_collected}"></span>
             <span @click="deleteImage(item.id)" class="el-icon-delete"></span>
           </div>
@@ -25,8 +25,8 @@
         background
         layout="prev, pager, next"
         :total="total"
-        :page-size="reqParamse.per_page"
-        :current-page="reqParamse.page"
+        :page-size="reqParams.per_page"
+        :current-page="reqParams.page"
         @current-change="changePager"
       ></el-pagination>
     </el-card>
@@ -60,7 +60,7 @@ export default {
   components: { MyBread },
   data () {
     return {
-      reqParamse: {
+      reqParams: {
         collect: false,
         page: 1,
         per_page: 10
@@ -80,18 +80,18 @@ export default {
   },
   methods: {
     async getImagelist () {
-      const { data: { data } } = await this.$http.get('user/images', this.reqParamse)
+      const { data: { data } } = await this.$http.get('user/images', this.reqParams)
       // console.log(data)
       this.total = data.total_count
       this.images = data.results
     },
     // 切换收藏
     changeCollect () {
-      this.reqParamse.page = 1
+      this.reqParams.page = 1
       this.getImagelist()
     },
     changePager (newPage) {
-      this.reqParamse.page = newPage
+      this.reqParams.page = newPage
       this.getImagelist()
     },
     // 打开弹框
@@ -106,7 +106,7 @@ export default {
       // 上传成功后过2秒关闭对话框更新列表
       window.setTimeout(() => {
         this.dialogVisible = false
-        this.reqParamse.page = 1
+        this.reqParams.page = 1
         this.getImagelist()
       }, 2000)
     },
