@@ -10,6 +10,7 @@ import NotFound from '@/views/404'
 import Img from '@/views/img'
 import Publish from '@/views/publish'
 import Common from '@/views/common'
+import Setting from '@/views/setting'
 
 import store from '@/store'
 
@@ -55,6 +56,11 @@ const router = new VueRouter({
           path: '/common',
           name: 'common',
           component: Common
+        },
+        {
+          path: '/setting',
+          name: 'setting',
+          component: Setting
         }
       ]
     },
