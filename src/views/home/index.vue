@@ -75,6 +75,7 @@
 
 <script>
 import store from '@/store'
+import eventBus from '@/components/eventBus'
 export default {
   data () {
     return {
@@ -85,6 +86,10 @@ export default {
     }
   },
   created () {
+    // 更新名字
+    eventBus.$on('updateName', (name) => {
+      this.name = name
+    })
     // 从本地存储中取用户信息
     const user = store.getUser()
     this.name = user.name

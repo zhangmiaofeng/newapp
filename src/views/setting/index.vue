@@ -10,8 +10,8 @@
             <el-col :span="12">
                 <!-- 表单 -->
                 <el-form label-width="120px">
-                    <el-form-item label="编号:">1</el-form-item>
-                    <el-form-item label="手机:">111</el-form-item>
+                    <el-form-item label="编号:">{{userForm.id}}</el-form-item>
+                    <el-form-item label="手机:">{{userForm.mobile}}</el-form-item>
                     <el-form-item label="媒体名称:">
                         <el-input v-model="userForm.name"></el-input>
                     </el-form-item>
@@ -22,7 +22,7 @@
                         <el-input v-model="userForm.email"></el-input>
                     </el-form-item>
                     <el-form-item>
-                        <el-button type="primary" @click="onSubmit">保存设置</el-button>
+                        <el-button type="primary" @click="saveUserInfo">保存设置</el-button>
                     </el-form-item>
                 </el-form>
             </el-col>
@@ -33,7 +33,7 @@
                     action="https://jsonplaceholder.typicode.com/posts/"
                     :show-file-list="false"
                     >
-                    <img v-if="imageUrl" :src="imageUrl" class="avatar">
+                    <img v-if="userForm.photo" :src="userForm.photo" class="avatar">
                     <i v-else class="el-icon-plus avatar-uploader-icon"></i>
                 </el-upload>
                 <p>修改头像</p>
@@ -44,15 +44,42 @@
 </template>
 
 <script>
+import store from '@/store'
+import eventBus from '@/components/eventBus'
 export default {
   data () {
     return {
       userForm: {
-        name: '',
-        intro: '',
-        email: ''
-      },
-      imageUrl: null
+        id: null,
+        mobile: null,
+        name: null,
+        intro: null,
+        email: null,
+        photo: null
+      }
+    }
+  },
+  created () {
+    // 获取用户信息
+    this.getUserInfo()
+  },
+  methods: {
+    async getUserInfo () {
+      const { data: { data } } = await this.$http.get('user/profile')
+      console.log(data)
+      this.userForm = data
+    },
+    async saveUserInfo () {
+      await this.$http.patch('user/profile', {
+        name: this.userForm.name,
+        intro: this.userForm.intro,
+        email: this.userForm.email
+      })
+      this.$message.success('保存设置成功')
+      // 当刷新页面的时候 home组件使用的本地存储数据 更新本地存储
+      store.setUser({ name: this.userForm.name })
+      // 更新home组件的用户名
+      eventBus.$emit('updateName', this.userForm.name)
     }
   }
 }
