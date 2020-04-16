@@ -30,7 +30,8 @@
                 <!-- 上传组件 -->
                 <el-upload
                     class="avatar-uploader"
-                    action="https://jsonplaceholder.typicode.com/posts/"
+                    action=""
+                    :http-request="myUpload"
                     :show-file-list="false"
                     >
                     <img v-if="userForm.photo" :src="userForm.photo" class="avatar">
@@ -80,6 +81,26 @@ export default {
       store.setUser({ name: this.userForm.name })
       // 更新home组件的用户名
       eventBus.$emit('updateName', this.userForm.name)
+    },
+    // 上传头像
+    myUpload (result) {
+      // 选中图片后触发函数 选择的结果result
+      // 文件信息获取 result.file
+      // axios+formData 上传数据
+      console.log(result)
+      const formData = new FormData()
+      formData.append('photo', result.file)
+      this.$http.patch('user/photo', formData)
+        .then((res) => {
+          // 上传头像成功
+          this.$message.success('修改头像成功')
+          // 预览
+          this.userForm.photo = res.data.data.photo
+          // 同步本地存储
+          store.setUser({ photo: this.userForm.photo })
+          // 同步home组件
+          eventBus.$emit('updatePhoto', this.userForm.photo)
+        })
     }
   }
 }

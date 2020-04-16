@@ -90,6 +90,10 @@ export default {
     eventBus.$on('updateName', (name) => {
       this.name = name
     })
+    // 更新头像
+    eventBus.$on('updatePhoto', (photo) => {
+      this.photo = photo
+    })
     // 从本地存储中取用户信息
     const user = store.getUser()
     this.name = user.name
